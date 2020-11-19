@@ -4,12 +4,13 @@ import (
 	"log"
 	"time"
 
+	"github.com/kiwisheets/util"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-func Init(cfg *DatabaseConfig) *gorm.DB {
+func Init(cfg *util.DatabaseConfig) *gorm.DB {
 	connectionString := constructConnectionString(cfg)
 
 	db, err := gorm.Open(postgres.New(postgres.Config{
@@ -40,6 +41,6 @@ func Init(cfg *DatabaseConfig) *gorm.DB {
 	return db
 }
 
-func constructConnectionString(dbCfg *DatabaseConfig) string {
+func constructConnectionString(dbCfg *util.DatabaseConfig) string {
 	return "host=" + dbCfg.Host + " user=" + dbCfg.User + " password=" + dbCfg.Password + " dbname=" + dbCfg.Database + " port=" + dbCfg.Port
 }
