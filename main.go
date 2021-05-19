@@ -41,6 +41,18 @@ func Init(cfg *util.DatabaseConfig) *gorm.DB {
 	return db
 }
 
-func constructConnectionString(dbCfg *util.DatabaseConfig) string {
+func constructConnectionString(cfg *util.DatabaseConfig) string {
+	str := "postgresql://" + cfg.User + ":" + cfg.Password + "@" + cfg.Host + ":" + cfg.Port + "/" + cfg.Database + "?sslmode=" + cfg.SSLMode
+	if cfg.SSLMode == "verify-full" || cfg.SSLMode == "verify-ca" {
+		str = str + "&sslrootcert=" + cfg.SSLCAPath
+	}
+	if cfg.Options != "" {
+		str = str + "&options=" + cfg.Options
+	}
+
+	return str
+}
+
+func constructDsn(dbCfg *util.DatabaseConfig) string {
 	return "host=" + dbCfg.Host + " user=" + dbCfg.User + " password=" + dbCfg.Password + " dbname=" + dbCfg.Database + " port=" + dbCfg.Port
 }
